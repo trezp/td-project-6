@@ -1,29 +1,31 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const data = require('./data.json');
 
 app.set('view engine', 'pug');
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Home' })
+  res.render('index', { projects: data.projects });
 });
 
 app.get('/about', function (req, res) {
-  res.render('about', { title: 'About'})
+  res.render('about', { title: 'About'});
 });
 
 app.get('/contact', function (req, res) {
-  res.render('contact', { title: 'Contact'})
+  res.render('contact', { title: 'Contact'});
 });
 
 app.get('/projects', function (req, res) {
-  res.render('project', { title: 'Hey'})
+  res.render('project', { title: 'Project'});
 });
 
 app.get('/projects/:projectID', function (req, res) {
-  const project = req.params.projectID;
-  res.render('project', { title: 'Hey', message: project })
+  const id = req.params.projectID;
+  const project = data.projects[id];
+  res.render('project', {title: project.project_name, description: project.description})
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
